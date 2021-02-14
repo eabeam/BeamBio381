@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## The Best Webpage 
 
-Let's start by linking to [Homework 2](homework_02.Rmd)
+Let's start by linking to [Homework 2](homework_02)
 
 
 
