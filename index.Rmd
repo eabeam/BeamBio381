@@ -9,8 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-Good afternoon, this is an excellent page. 
+## The Best Webpage 
+
+Let's start by linking to [Homework 2](homework_02.Rmd)
+
+
+
 
 ```{r cars}
 summary(cars)
