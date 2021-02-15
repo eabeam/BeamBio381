@@ -2,6 +2,7 @@
 title: "Homework 03"
 author: "Emily beam"
 date: "2/14/2021"
+layout: post
 output: html_document
 ---
 
