@@ -1,0 +1,157 @@
+---
+title: "Homework 03"
+author: "Emily beam"
+date: "2/14/2021"
+output: html_document
+---
+
+
+## 1. Converting tabs to commas
+```
+First String    Second      1.22      3.4
+Second          More Text   1.555555  2.2220
+Third           x           3         124
+```
+
+Find: `\s{2,}` 
+
+Replace: `,`
+
+The idea here is to find 2+ spaces (to avoid splitting First String), then replacing that whole group with a comma. This worked because the columns are separated with spaces. Had I instead used tabs, then I think instead finding with `\t` would have worked instead.
+
+```
+First String,Second,1.22,3.4
+Second,More Text,1.555555,2.2220
+Third,x,3,124
+```
+
+## 2. Pretty formatting 
+```
+Ballif, Bryan, University of Vermont
+Ellison, Aaron, Harvard Forest
+Record, Sydne, Bryn Mawr
+```
+
+First I did it extremely awkwardly Also, when I try to use `\s` in the replace function, it seems to be ignored? 
+
+Find: `(^\w+),(\s\w+),\s(\w+\s\w+\s?\w+$)`
+
+Then, I had a better idea: 
+
+Find: `(^\w+),(\s\w+),\s(.+$)`
+
+Replace: `\2 \1 (\3\)`
+
+```
+ Bryan Ballif (University of Vermont)
+ Aaron Ellison (Harvard Forest)
+ Sydne Record (Bryn Mawr)
+ ```
+ 
+## 3. Tunes
+
+Convert 
+```
+0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Cherokee Shuffle.mp3 0004 Walking Cane.mp3
+```
+
+Since all tunes are in the same format, I did this: 
+
+Find: `.mp3\s`
+
+Replace: `.mp3\n`
+
+To 
+``` 
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Cherokee Shuffle.mp3
+0004 Walking Cane.mp3
+```
+
+## 4. Tunes, retake 
+
+
+Then  to 
+```
+Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Cherokee Shuffle_0003.mp3
+Walking Cane_0004.mp3
+```
+
+This one reminded me that I can use the `.` to grab all the text after the four-digit number before the .mp3 extension.
+
+Find: `(\d{4})(\s.+)(\.mp3)`
+
+Replace: `\2_\1\3`
+
+## 5. Fancy biology 
+
+Convert 
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+For this one and the other, I first did the third number awkwardly: `\d+\.\d+`. I later realized this would be simpler: `[0-9.]+`
+
+Find: `(\w)\w+,(\w+),[0-9.]+,(\d+)`
+
+Replace `\1_\2,\3`
+to 
+```
+C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55
+```
+
+
+
+## 6. Biology, part II 
+Convert 
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+The idea here is to identify and retain the first word character, then ditch the rest. Then, retain up to the first four letters of the second word. Find but ignore the third number, noting that there could be a decimal point in it with `[0-9.]+`, and then capture the comma and all digits (this would have to be adjusted if for some reason this wasn't an integer). 
+
+Find: `(\w)\w+,(\w{0,4})\w+,[0-9.]+(,\d+)`
+
+Replace `\1_\2\3`
+
+
+```
+C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55
+```
+
+## 7. Biology, part III 
+Convert 
+```
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+```
+
+Here, I grab the first three characters of the first two words, and make them into one word. Then I capture the last two sets of numbers (as before), and reverse the order, manually adding in commas and spaces. 
+
+Find: `(\w{3})\w+,(\w{3})\w+,([0-9.]+),(\d+)`
+
+Replace: `\1\2, \4, \3`
+
+```
+Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3
+```

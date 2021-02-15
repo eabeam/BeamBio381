@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Emily Beam" />
+<meta name="author" content="Emily beam" />
 
 
-<title>The Best Webpage</title>
+<title>Homework 03</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -375,19 +375,107 @@ summary {
 
 
 
-<h1 class="title toc-ignore">The Best Webpage</h1>
-<h4 class="author">Emily Beam</h4>
+<h1 class="title toc-ignore">Homework 03</h1>
+<h4 class="author">Emily beam</h4>
 <h4 class="date">2/14/2021</h4>
 
 </div>
 
 
-<div id="assignments" class="section level2">
-<h2>Assignments</h2>
-<ul>
-<li><a href="homework_02.html">Homework 2</a></li>
-<li><a href="homework_03.html">Homework 3</a></li>
-</ul>
+<div id="converting-tabs-to-commas" class="section level2">
+<h2>1. Converting tabs to commas</h2>
+<pre><code>First String    Second      1.22      3.4
+Second          More Text   1.555555  2.2220
+Third           x           3         124</code></pre>
+<p>Find: <code>\s{2,}</code></p>
+<p>Replace: <code>,</code></p>
+<p>The idea here is to find 2+ spaces (to avoid splitting First String), then replacing that whole group with a comma. This worked because the columns are separated with spaces. Had I instead used tabs, then I think instead finding with <code>\t</code> would have worked instead.</p>
+<pre><code>First String,Second,1.22,3.4
+Second,More Text,1.555555,2.2220
+Third,x,3,124</code></pre>
+</div>
+<div id="pretty-formatting" class="section level2">
+<h2>2. Pretty formatting</h2>
+<pre><code>Ballif, Bryan, University of Vermont
+Ellison, Aaron, Harvard Forest
+Record, Sydne, Bryn Mawr</code></pre>
+<p>First I did it extremely awkwardly Also, when I try to use <code>\s</code> in the replace function, it seems to be ignored?</p>
+<p>Find: <code>(^\w+),(\s\w+),\s(\w+\s\w+\s?\w+$)</code></p>
+<p>Then, I had a better idea:</p>
+<p>Find: <code>(^\w+),(\s\w+),\s(.+$)</code></p>
+<p>Replace: <code>\2 \1 (\3\)</code></p>
+<pre><code> Bryan Ballif (University of Vermont)
+ Aaron Ellison (Harvard Forest)
+ Sydne Record (Bryn Mawr)</code></pre>
+</div>
+<div id="tunes" class="section level2">
+<h2>3. Tunes</h2>
+<p>Convert</p>
+<pre><code>0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Cherokee Shuffle.mp3 0004 Walking Cane.mp3</code></pre>
+<p>Since all tunes are in the same format, I did this:</p>
+<p>Find: <code>.mp3\s</code></p>
+<p>Replace: <code>.mp3\n</code></p>
+<p>To</p>
+<pre><code>0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Cherokee Shuffle.mp3
+0004 Walking Cane.mp3</code></pre>
+</div>
+<div id="tunes-retake" class="section level2">
+<h2>4. Tunes, retake</h2>
+<p>Then to</p>
+<pre><code>Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Cherokee Shuffle_0003.mp3
+Walking Cane_0004.mp3</code></pre>
+<p>This one reminded me that I can use the <code>.</code> to grab all the text after the four-digit number before the .mp3 extension.</p>
+<p>Find: <code>(\d{4})(\s.+)(\.mp3)</code></p>
+<p>Replace: <code>\2_\1\3</code></p>
+</div>
+<div id="fancy-biology" class="section level2">
+<h2>5. Fancy biology</h2>
+<p>Convert</p>
+<pre><code>Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55</code></pre>
+<p>For this one and the other, I first did the third number awkwardly: <code>\d+\.\d+</code>. I later realized this would be simpler: <code>[0-9.]+</code></p>
+<p>Find: <code>(\w)\w+,(\w+),[0-9.]+,(\d+)</code></p>
+<p>Replace <code>\1_\2,\3</code> to</p>
+<pre><code>C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55</code></pre>
+</div>
+<div id="biology-part-ii" class="section level2">
+<h2>6. Biology, part II</h2>
+<p>Convert</p>
+<pre><code>Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55</code></pre>
+<p>The idea here is to identify and retain the first word character, then ditch the rest. Then, retain up to the first four letters of the second word. Find but ignore the third number, noting that there could be a decimal point in it with <code>[0-9.]+</code>, and then capture the comma and all digits (this would have to be adjusted if for some reason this wasn’t an integer).</p>
+<p>Find: <code>(\w)\w+,(\w{0,4})\w+,[0-9.]+(,\d+)</code></p>
+<p>Replace <code>\1_\2\3</code></p>
+<pre><code>C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55</code></pre>
+</div>
+<div id="biology-part-iii" class="section level2">
+<h2>7. Biology, part III</h2>
+<p>Convert</p>
+<pre><code>Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55</code></pre>
+<p>Here, I grab the first three characters of the first two words, and make them into one word. Then I capture the last two sets of numbers (as before), and reverse the order, manually adding in commas and spaces.</p>
+<p>Find: <code>(\w{3})\w+,(\w{3})\w+,([0-9.]+),(\d+)</code></p>
+<p>Replace: <code>\1\2, \4, \3</code></p>
+<pre><code>Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3</code></pre>
 </div>
 
 
