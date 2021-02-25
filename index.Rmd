@@ -16,6 +16,9 @@ knitr::opts_chunk$set(echo = TRUE)
 - [Homework 2](homework_02.html)
 - [Homework 3](homework_03.html)
 - [Homework 4](homework_04_typora.html)
+  - [Letter PDF](hw04_latter.pdf)
+  - [Presentation](homework_04_beamer.pdf)
+  - [Past presentation](Chapter4_slides_f20.pdf) (I love beamer!)
 
 
 
